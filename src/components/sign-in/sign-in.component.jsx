@@ -9,11 +9,11 @@ import './sign-in.styles.scss'
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
-  }
 
-  state = {
-    email: '',
-    password: ''
+    this.state = {
+      email: '',
+      password: ''
+    }
   }
 
   handleSubmit = event => {
