@@ -18,7 +18,6 @@ export const selectCollection = createSelector(
   selectCollections,
   selectCollectionUrlParam,
   (collections, selectCollectionUrlParam) => {
-    console.log('selectCollection');
-    return collections[selectCollectionUrlParam]
+    return collections ? collections[selectCollectionUrlParam] : null
   }
 )
