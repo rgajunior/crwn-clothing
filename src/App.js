@@ -11,34 +11,19 @@ import SingInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up
 import CheckoutPage from './pages/checkout/checkout.component'
 
 import Header from './components/header/header.component'
-// eslint-disable-next-line no-unused-vars
-import { auth, createUserProfileDocument, addCollectionAndDocuments } from './firebase/firebase.utils'
-import { setCurrentUser } from './redux/user/user.actions'
+
 import { selectCurrentUser } from './redux/user/user.selectors'
 import { selectCollectionsForPreview } from './redux/shop/shop.selector'
+import { checkUserSession } from './redux/user/user.actions'
+
 
 class App extends React.Component {
   unsubcribeFromAuth = null;
 
   componentDidMount() {
-    // eslint-disable-next-line no-unused-vars
-    const { setCurrentUser, collectionsArray } = this.props;
+    const { checkUserSession } = this.props;
 
-    this.unsubcribeFromAuth = auth.onAuthStateChanged(async user => {
-      if (user) {
-        const userRef = await createUserProfileDocument(user);
-
-        userRef.onSnapshot(snapShot => {
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data()
-          });
-        })
-      } else {
-        setCurrentUser(null);
-      }
-      //addCollectionAndDocuments('collections', collectionsArray.map(({ title, items }) => ({ title, items })));
-    })
+    checkUserSession();
   }
 
   componentWillUnmount() {
@@ -76,7 +61,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
+  checkUserSession: () => dispatch(checkUserSession())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
